@@ -75,3 +75,4 @@ jobs:
             build/IASsensor/IASsensor*
             build/IASsensor/*IASsensor.zigbee
             !build/**/*.lst
+
