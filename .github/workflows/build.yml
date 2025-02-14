@@ -15,6 +15,11 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Install Dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y cmake build-essential unzip
+
       - name: Cache SDK and Toolchain
         uses: actions/cache@v4
         with:
@@ -40,7 +45,9 @@ jobs:
           cmake -B build
           cmake --build build
 
+      # ✅ Skip artifact upload if running in act
       - name: Archive switch files
+        if: ${{ env.ACT != 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: switch-linux
@@ -50,6 +57,7 @@ jobs:
             !build/**/*.lst
 
       - name: Archive light files
+        if: ${{ env.ACT != 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: light-linux
@@ -59,6 +67,7 @@ jobs:
             !build/**/*.lst
 
       - name: Archive IASsensor files
+        if: ${{ env.ACT != 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: IASsensor-linux
